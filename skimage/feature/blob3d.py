@@ -240,7 +240,7 @@ def blob_log3(image, min_sigma=1, max_sigma=50, num_sigma=10, threshold=.2,
     image_cube = np.dstack(gl_images)
 
     local_maxima = peak_local_max(image_cube, threshold_abs=threshold,
-                                  min_distance=3),
+                                  min_distance=3,
                                   threshold_rel=0.0,
                                   exclude_border=False)
 
@@ -252,7 +252,7 @@ def blob_log3(image, min_sigma=1, max_sigma=50, num_sigma=10, threshold=.2,
     # Convert the last index to its corresponding scale value
     lm[:, 3] = sigma_list[local_maxima[:, 3]]
     local_maxima = lm
-    return local_maxima
+    return _prune_blobs(local_maxima, overlap)
 
 #not supported until i can figure out how to do the slices in 3d space
 #def blob_doh3(image, min_sigma=1, max_sigma=30, num_sigma=10, threshold=0.01,
